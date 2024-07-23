@@ -1,0 +1,21 @@
+name: "Crea un release"
+description: "Permite crear etiquetas de manera automatica"
+inputs:
+    releaseType:
+        description: "tipo de release a generar"
+        required: false
+        default: ""
+    branch:
+        description: "Rama donde segenera el release"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Generando release
+          shell: bash
+          run: |
+            git checkout ${{ inputs.branch }}
+            npm install
+            npm run release${{ inputs.releaseType }}
+            git push
+            git push origin --follow-tags

@@ -1,0 +1,38 @@
+name: "Crear labels"
+description: "Permite crear etiquetas de manera automatica"
+inputs:
+    directorio:
+        description: "Directorio del script"
+        required: false
+        default: "./extras/labels/"
+    token:
+        description: "Token de acceso a la API de GitHub"
+        required: true
+    owner:
+        description: "Propietario del repositorio"
+        required: true
+    repo:
+        description: "Nombre del repositorio"
+        required: true
+    default_branch:
+        description: "Rama por defecto"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Creando labels
+          shell: bash
+          run: |
+            cd ${{ inputs.directorio }}
+            npm init -y
+            npm i isomorphic-fetch
+            node ./index.js ${{ inputs.token }} ${{ inputs.owner }} ${{ inputs.repo }}
+            pwd
+            cd ../../
+            pwd
+            git checkout ${{ inputs.default_branch }}
+            git rm -r ${{ inputs.directorio }}
+            rm -R ${{ inputs.directorio }}
+            git add -A
+            git commit -m "chore(init): first commit"
+            git push

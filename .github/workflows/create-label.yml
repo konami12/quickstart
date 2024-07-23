@@ -1,0 +1,52 @@
+name: create-label
+
+on:
+  create:
+    ref_type: branch
+env:
+    EXTRA_PATH: ./extras/labels/
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 📦 INSTALANDO NODEJS LTS
+        uses: ./.github/actions/setup-node
+
+      - name: ✏️ CONFIGURACIONES PARA FIRMAR COMMITS
+        uses: ./.github/actions/git-config
+        with:
+          username: "Jmendez-Bot"
+          email: "jorge.mendez.ortega@gmail.com"
+
+      - name: 🔖 CREANDO ETIQUETAS
+        uses: ./.github/actions/set-labels
+        with:
+          directorio: ${{ env.EXTRA_PATH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          defaultBranch: main
+
+      - name: 🌿 CREANDO RAMA DEVELOP
+        uses: ./.github/actions/set-branch
+        with:
+          defaultBranch: main
+          newBranch: develop
+
+      - name: 🌿 CREANDO RAMA BETA
+        uses: ./.github/actions/set-branch
+        with:
+          defaultBranch: main
+          newBranch: beta
+
+      - name: ⚓ CARGANDO RAMA POR DEFECTO
+        uses: ./.github/actions/set-default-branch
+        with:
+            defaultBranch: develop
+            token: ${{ secrets.MY_TOKEN }}
+            repo: ${{ github.repository }}

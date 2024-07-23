@@ -1,0 +1,29 @@
+name: "Default Branch"
+description: "Permite indicar una rama por defecto"
+inputs:
+    defaultBranch:
+        description: "Rama que se establecera como por defecto"
+        required: true
+    token:
+        description: "Token de acceso a la API de GitHub"
+        required: true
+    repo:
+        description: "Nombre del repositorio"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Seteando rama
+          shell: bash
+          run: |
+            git checkout ${{ inputs.defaultBranch }}
+            git fetch; git pull
+
+            curl -X PATCH \
+            -H "Authorization: token ${{ inputs.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ inputs.repo }} \
+            -d '{"default_branch":"${{ inputs.defaultBranch }}"}'
+
+            curl -X DELETE -H "Authorization: token ${{ inputs.token }}" \
+            "https://api.github.com/repos/${{ inputs.repo }}/git/refs/heads/init"

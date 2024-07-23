@@ -1,0 +1,41 @@
+name: auto-release
+on:
+  pull_request:
+      branches:
+        - main
+      types: [closed]
+jobs:
+    build:
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📦 INSTALANDO NODEJS LTS
+        uses: ./.github/actions/setup-node
+
+      - name: ✏️ CONFIGURACIONES PARA FIRMAR COMMITS
+        uses: ./.github/actions/git-config
+        with:
+          username: "Jmendez-Bot"
+          email: "jorge.mendez.ortega@gmail.com"
+
+      - name: 📝 CREANDO RELEASE
+        uses: ./.github/actions/set-release
+        with:
+          releaseType: ""
+          branch: "main"
+
+      - name: 🔄 SINCRONIZANDO DEVELOP
+        uses: ./.github/actions/update-branch
+        with:
+            branchOrigin: "main"
+            branchDestiny: "develop"
+
+      - name: 🔄 SINCRONIZANDO BETA
+        uses: ./.github/actions/update-branch
+        with:
+            branchOrigin: "main"
+            branchDestiny: "beta"

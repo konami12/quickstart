@@ -1,0 +1,21 @@
+name: "Crea ramas de manera automatica"
+description: "Crea una rama dinamicamente"
+inputs:
+    defaultBranch:
+        description: "Rama base para crear las ramas"
+        required: true
+    newBranch:
+        description: "Nombre de la rama nueva a crear"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Creando una nueva rama
+          shell: bash
+          run: |
+            git checkout ${{ inputs.defaultBranch }}
+            git fetch
+            git pull
+            git checkout -b ${{ inputs.newBranch }}
+            git pull origin ${{ inputs.defaultBranch }}
+            git push --set-upstream origin ${{ inputs.newBranch }}

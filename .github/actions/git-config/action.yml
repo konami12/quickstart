@@ -1,0 +1,17 @@
+name: "Configuracion para firmar commits"
+description: "Configuraciones para firmar los commits automaticos"
+inputs:
+    username:
+        description: "Nombre de usuario para firmar los commits"
+        required: true
+    email:
+        description: "Correo electronico para firmar los commits"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Configurando Git para firmar commits
+          shell: bash
+          run: |
+            git config --global user.name "${{ inputs.username }}"
+            git config --global user.email "${{ inputs.email }}"

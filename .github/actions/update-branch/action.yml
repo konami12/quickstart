@@ -1,0 +1,21 @@
+name: "Sync branch"
+description: "Sincronizacion de ramas que estan debajo de main"
+inputs:
+    branchOrigin:
+        description: "Rama destion"
+        required: false
+        default: "main"
+    branchDestiny:
+        description: "Rama destion"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Sincronizando ramas
+          shell: bash
+          run: |
+            git checkout ${{ inputs.branchDestiny }}
+            git fetch
+            git pull
+            git merge --no-ff main -m "Auto-merge main back tos ${{ inputs.branchDestiny }}"
+            git push

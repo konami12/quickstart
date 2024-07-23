@@ -1,0 +1,7 @@
+.editorconfig
+.gitignore
+.lintstagedrc
+.prettierrc*
+.czrc
+.commitlintrc
+.husky

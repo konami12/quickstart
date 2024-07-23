@@ -1,0 +1,37 @@
+{
+    "name": "quickstart",
+    "version": "0.0.0",
+    "description": "Quickstart project with commitizen, husky, lint-staged, prettier, standard-version",
+    "main": "index.js",
+    "scripts": {
+        "alias": "git config --global alias.cz \"!npm run commit\"",
+        "prepare:husky": "husky init",
+        "pre-commit": "git fetch; git pull; lint-staged",
+        "commit": "cz",
+        "release:beta": "standard-version --prerelease beta",
+        "pre:release": "standard-version --dry-run",
+        "release": "standard-version",
+        "frendly": "commitizen init cz-conventional-changelog --save-dev --save-exact --force",
+        "prettier:format": "prettier --config .prettierrc './**' --write",
+        "prettier:watch": "onchange './**' -- prettier --write {{changed}}",
+        "postInstall": "npm run alias",
+        "prepare": "husky"
+    },
+    "author": "Jorge Mendez Ortega <jorge.mendez.ortega@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@commitlint/cli": "19.3.0",
+        "@commitlint/config-conventional": "19.2.2",
+        "cz-conventional-changelog": "^3.3.0",
+        "husky": "9.1.1",
+        "lint-staged": "15.2.7",
+        "prettier": "3.3.3",
+        "prettier-plugin-sh": "0.14.0",
+        "standard-version": "9.5.0"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    }
+}

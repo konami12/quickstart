@@ -1,0 +1,9 @@
+name: "Instlacion de NodeJS lts"
+description: "Instalacion de NodeJS lts"
+runs:
+    using: "composite"
+    steps:
+        - name: Instalando NodeJS lts
+          uses: actions/setup-node@v4
+          with:
+            node-version: 'lts/*'
