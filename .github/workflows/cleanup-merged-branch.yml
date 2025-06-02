@@ -1,0 +1,27 @@
+name: cleanup-merged-branch
+description: "Elimina ramas que han sido mergeadas a develop"
+on:
+    pull_request:
+        branches:
+            - develop
+        types:
+            - closed
+jobs:
+    delete-merged-branch:
+        if: github.event.pull_request.merged == true
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                token: ${{ secrets.GITHUB_TOKEN }}
+            - name: ✏️ CONFIGURACIONES PARA FIRMAR COMMITS
+              uses: ./.github/actions/git-config
+              with:
+                username: ${{ secrets.USER }}
+                email: ${{ secrets.EMAIL }}
+            - name: 🗑 BORRANDO RAMA DEL ULTIMO MERGE
+              uses: ./.github/actions/set-delete-branch
+              with:
+                branchToDelete: ${{ github.event.pull_request.head.ref }}
+                baseBranch: develop

@@ -19,8 +19,8 @@ jobs:
       - name: ✏️ CONFIGURACIONES PARA FIRMAR COMMITS
         uses: ./.github/actions/git-config
         with:
-          username: "Jmendez-Bot"
-          email: "jorge.mendez.ortega@gmail.com"
+          username: ${{ secrets.USER }}
+          email: ${{ secrets.EMAIL }}
 
       - name: 📝 CREANDO RELEASE
         uses: ./.github/actions/set-release

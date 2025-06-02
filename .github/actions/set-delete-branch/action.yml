@@ -1,0 +1,20 @@
+name: "Delete Branch"
+description: "Permite borrar una rama especifica del repositorio"
+inputs:
+    branchToDelete:
+        description: "Rama que sera eliminada"
+        required: true
+    baseBranch:
+        description: "Rama base del repositorio"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - name: Borrando rama
+          shell: bash
+          run: |
+            git checkout ${{ inputs.baseBranch }}
+            git fetch; git pull
+            echo "Pasando a la rama base: ${{ inputs.baseBranch }}"
+            echo "Borrando rama: ${{ inputs.branchToDelete }}"
+            git push origin --delete ${{ inputs.branchToDelete }}
